@@ -2,7 +2,7 @@ require('dotenv/config');
 const mongoose = require('mongoose');
 const express = require('express');
 const createError = require('http-errors');
-// const path = require('path');
+const path = require('path');
 const logger = require('morgan');
 const router = require('./config/routes.config');
 const session = require('./config/session.config');
@@ -24,6 +24,13 @@ app.use(express.urlencoded({ extended: false }));
 
 // configure routes
 app.use('/api/v0', router);
+
+// Serve any static files
+app.use(express.static(path.join(__dirname, 'client/build')));
+// Handle React routing, return all requests to React app
+app.get('*', function (req, res) {
+  res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
+});
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
