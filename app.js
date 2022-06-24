@@ -24,6 +24,12 @@ app.use(express.urlencoded({ extended: false }));
 // configure routes
 app.use('/api/v0', router);
 
+// Serve any static files
+app.use(express.static(path.join(__dirname, 'client/build')));
+// Handle React routing, return all requests to React app
+app.get('*', function (req, res) {
+  res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
+});
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
@@ -39,26 +45,19 @@ app.use((error, req, res) => {
   } else if (!error.status) {
     error = createError(500, error);
   }
-  
+
   const data = { message: '', errors: {} };
   data.message = error.message;
   data.errors = error.errors
-  ? Object.keys(error.errors).reduce(
-    (errors, key) => ({ ...errors, [key]: error.errors[key]?.message || error.errors[key] }),
-    {}
+    ? Object.keys(error.errors).reduce(
+      (errors, key) => ({ ...errors, [key]: error.errors[key]?.message || error.errors[key] }),
+      {}
     )
     : undefined;
-    
-    res.status(error.status).json(data);
-  });
 
-// Serve any static files
-app.use(express.static(path.join(__dirname, 'client/build')));
-// Handle React routing, return all requests to React app
-app.get('*', function (req, res) {
-  res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
+  res.status(error.status).json(data);
 });
-  
+
 const port = 3000;
 
 app.listen(process.env.PORT || 3000, function () {
