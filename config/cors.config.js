@@ -1,7 +1,7 @@
 const createError = require('http-errors');
 const cors = require('cors');
 
-const allowedOrigins = ['http://localhost:8083', 'https://justlaunched.xyz', 'https://justlaunched.herokuapp.com'];
+const allowedOrigins = ['http://localhost:8083', 'https://www.justlaunched.xyz', 'https://justlaunched.herokuapp.com'];
 
 module.exports = cors({
   credentials: true,
