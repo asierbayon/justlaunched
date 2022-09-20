@@ -4,7 +4,7 @@ export const currentUserStorageKey = 'current-user';
 
 const http = axios.create({
   withCredentials: true,
-  baseURL: 'https://justlaunched.herokuapp.com/api/v0'
+  baseURL: 'https://justlaunched.xyz/api/v0'
 });
 
 http.interceptors.response.use(
